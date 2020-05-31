@@ -100,7 +100,7 @@ refiner.load_state_dict(torch.load(opt.refine_model))
 refiner.eval()
 
 testlist = []
-input_file = open('{0}/test_data_list.txt'.format(dataset_config_dir))
+input_file = open('{0}/test_data_smaller_list.txt'.format(dataset_config_dir))
 while 1:
     input_line = input_file.readline()
     if not input_line:
@@ -133,7 +133,8 @@ while 1:
     cld[class_id] = np.array(cld[class_id])
     class_id += 1
 
-for now in range(0, 2949):
+#for now in range(0, 2949):
+for now in range(0, len(testlist)):
     img = Image.open('{0}/{1}-color.png'.format(opt.dataset_root, testlist[now]))
     depth = np.array(Image.open('{0}/{1}-depth.png'.format(opt.dataset_root, testlist[now])))
     posecnn_meta = scio.loadmat('{0}/results_PoseCNN_RSS2018/{1}.mat'.format(ycb_toolbox_dir, '%06d' % now))
@@ -231,7 +232,7 @@ for now in range(0, 2949):
             # Here 'my_pred' is the final pose estimation result after refinement ('my_r': quaternion, 'my_t': translation)
 
             my_result.append(my_pred.tolist())
-        except ZeroDivisionError:
+        except (ZeroDivisionError, ValueError):
             print("PoseCNN Detector Lost {0} at No.{1} keyframe".format(itemid, now))
             my_result_wo_refine.append([0.0 for i in range(7)])
             my_result.append([0.0 for i in range(7)])

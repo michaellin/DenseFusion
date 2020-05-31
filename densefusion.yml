@@ -1,0 +1,15 @@
+name: densefusion
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.6
+  #- opencv=2.4
+  - numpy
+  - scipy
+  - pytorch=0.4
+  - torchvision
+  - pyYAML
+  - pip
+  - pip:
+    - opencv-python
